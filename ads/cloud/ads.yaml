@@ -1,0 +1,40 @@
+imports:
+- path: instance.jinja
+- path: autoscaler.jinja
+- path: loadbalancer.jinja
+
+resources:
+- name: ads-deployment-instances
+  type: instance.jinja
+  properties:
+    region: us-east4
+    zone: us-east4-b
+    prefix: ads-service
+    privateBucket: retail-website-57113-private-bucket
+    publicBucket: retail-website-57113-public-bucket
+    spannerDatabase: retail-website-57-spanner-db
+    spannerInstance: retail-website-57113-app-spanner-instance
+    network: retail-website-57113-app-network
+    subnet: retail-website-57113-ad-app-network-subnet
+    projectID: retail-website-57113
+    adBinName: app
+    serviceAccount: 892560525445-compute@developer.gserviceaccount.com
+
+
+- name: ads-deployment-autoscaler
+  type: autoscaler.jinja
+  properties:
+    zone: us-east4-b
+    prefix: ads-service
+    privateBucket: retail-website-57113-private-bucket
+    projectID: retail-website-57113
+    adBinName: app
+    size: 1
+    maxSize: 2
+
+- name: ads-deployment-loadbalancer
+  type: loadbalancer.jinja
+  properties:
+    prefix: ads-service
+    network: retail-website-57113-app-network
+    projectID: retail-website-57113
